@@ -1,0 +1,57 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    detail page
+{% endblock title %}
+
+{% block content %}
+    <div class="container py-4">
+        <div class="card shadow-sm">
+            <div class="card-body">
+                {% if object.image %}
+                    <img class="card-img-top mb-3" src="{{ object.image.url }}" alt="{{ object.title }}">
+                {% endif %}
+
+                <h1 class="card-title">{{ object.title }}</h1>
+                <h6 class="card-subtitle mb-2 text-muted">Author: {{ object.author }} | {{ object.created_at }}</h6>
+                <p class="card-text">{{ object.body | safe }}</p>
+                {% if request.user.is_authenticated and request.user == object.author %}
+                    <div class="d-flex justify-content-end">
+                        <a href="{% url 'blogs:update' object.pk %}" class="btn btn-sm btn-secondary mr-2">Edit</a>
+                        <a href="{% url 'blogs:delete' object.pk %}" class="btn btn-sm btn-danger">Delete</a>
+                    </div>
+                {% endif %}
+            </div>
+            <div class="card-footer text-muted">
+                <span>{{ object.author }} | {{ object.created_at }}</span>
+            </div>
+        </div>
+
+        <div class="card shadow-sm mt-4">
+            <div class="card-header">Comments</div>
+            {% for comment in object.comments.all %}
+                <div class="card-body">
+                    <blockquote class="blockquote mb-0">
+                        <p>{{ comment }}</p>
+                        <footer class="blockquote-footer">{{ comment.author }}</footer>
+                    </blockquote>
+                </div>
+            {% empty %}
+                <div class="card-body">
+                    <p>No comments yet.</p>
+                </div>
+            {% endfor %}
+        </div>
+
+        <div class="card shadow-sm mt-4">
+            <div class="card-body">
+                <h5>Add a Comment</h5>
+                <form method="post">
+                    {% csrf_token %}
+                    {{ form.as_p }}
+                    <button type="submit" class="btn btn-primary">Add Comment</button>
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock content %}

@@ -1,0 +1,65 @@
+{% extends 'base.html' %}
+
+{% block title %}
+   Profile
+{% endblock title %}
+
+{% block content %}
+<style>
+    .profile-container {
+        max-width: 600px;
+        margin: 0 auto;
+        padding: 20px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        background-color: #f9f9f9;
+        font-family: Arial, sans-serif;
+    }
+
+    .profile-container h1 {
+        text-align: center;
+        margin-bottom: 20px;
+    }
+
+    .profile-container img {
+        display: block;
+        margin: 0 auto;
+        border-radius: 50%;
+        margin-bottom: 20px;
+    }
+
+    .wrap {
+        margin-bottom: 20px;
+    }
+
+    .wrap p {
+        margin-bottom: 10px;
+    }
+
+    .profile-container a {
+        display: block;
+        text-align: center;
+        color: #007bff;
+        text-decoration: none;
+        font-weight: bold;
+    }
+
+    .profile-container a:hover {
+        text-decoration: underline;
+    }
+</style>
+
+   <div class="profile-container">
+        <h1>Profile</h1>
+        <img src="{{ user.image.url }}" alt="user-img" width="100px">
+        <div class="wrap">
+            <p>Username: {{ user.username }}</p>
+            <p>First Name: {{ user.first_name }}</p>
+            <p>Last Name: {{ user.last_name }}</p>
+            <p>Email: {{ user.email }}</p>
+        </div>
+
+        <a href="{% url 'users:profile-edit' %}">Edit Profile</a><br>
+    </div>
+
+{% endblock content %}
